@@ -1,0 +1,99 @@
+API Documentation for Securin CVE Operations
+
+Introduction
+This document outlines the APIs provided by the Securin application for managing Common Vulnerabilities and Exposures (CVEs). The APIs allow users to view CVE details, fetch CVEs, and retrieve detailed information about specific CVEs.
+
+Base URL
+http://yourdomain.com
+
+Authentication
+Authentication is not required for accessing the APIs.
+
+Error Handling
+The APIs return standard HTTP status codes to indicate the success or failure of a request. In case of an error, additional information may be provided in the response body.
+
+---
+
+1. View CVE Details
+
+Endpoint
+GET /view
+
+Parameters
+- startIndex: (optional) Index of the first CVE to retrieve (default: 0)
+- resultsPerPage: (optional) Number of CVEs to retrieve per page (default: 10)
+
+Response
+- resultsPerPage: Number of CVEs per page
+- startIndex: Index of the first CVE
+- totalResults: Total number of CVEs matching the query
+- format: Format of the CVE data (NVD_CVE)
+- version: Version of the CVE data (2.0)
+- timestamp: Timestamp of the response
+- vulnerabilities: List of CVE objects, each containing:
+  - id: CVE ID
+  - sourceIdentifier: Source identifier of the CVE
+  - published: Date of publication
+  - lastModified: Last modification date
+  - vulnStatus: Vulnerability status
+  - descriptions: List of descriptions
+  - metrics: CVE metrics, including CVSS scores
+  - weaknesses: List of weaknesses
+  - configurations: List of configurations
+  - references: List of references
+
+Example
+GET /view?startIndex=0&resultsPerPage=5
+
+---
+
+2. Get CVE by ID
+
+Endpoint
+GET /cves/<cve_id>
+
+Parameters
+- cve_id: ID of the CVE to retrieve
+
+Response
+- cve: CVE object containing details such as ID, source identifier, publication date, last modification date, vulnerability status, and CVSS score (if available).
+
+Example
+GET /cves/CVE-2021-12345
+
+---
+
+3. Get All CVEs
+
+Endpoint
+GET /cves
+
+Parameters
+None
+
+Response
+- cves: List of CVE objects, each containing details such as ID, source identifier, publication date, last modification date, vulnerability status, and CVSS score (if available).
+
+Example
+GET /cves
+
+---
+
+4. Get CVEs by Year
+
+Endpoint
+GET /cves/year/<year>
+
+Parameters
+- year: Year for which to retrieve CVEs
+
+Response
+- cves: List of CVE objects for the specified year, each containing details such as ID, source identifier, publication date, last modification date, vulnerability status, and CVSS score (if available).
+
+Example
+GET /cves/year/2021
+
+---
+
+Conclusion
+This concludes the API documentation for the Securin CVE operations. For any further assistance or inquiries, please contact support@securin.com.

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CVE Detail</title>
+  <style>
+    .name {
+      width: 100%;
+      display: flex;
+      gap: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  {% if cve_details %}
+    <h1>CVE Details</h1>
+    <h2>Descriptions</h2>
+    <p>{{ cve_details.get('description', '') }}</p>  <h2>CVSS V2 Metrics</h2>
+    <div class="name">
+      <h3>Security : <span style="font-weight: normal;">{{ cve_details.get('base_severity', '') }}</span></h3>
+      <h3>Score: <span style="font-weight: normal;">{{ cve_details.get('impact_score', '') }}</span></h3>
+    </div>
+    <h3>Vector String: <span style="font-weight: normal;">{{ cve_details.get('vector_string', '') }}</span></h3>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Access Vector</th>
+          <th>Access Complexity</th>
+          <th>Authentication</th>
+          <th>Confidentiality Impact</th>
+          <th>Integrity Impact</th>
+          <th>Availability Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ cve_details.get('access_vector', '') }}</td>
+          <td>{{ cve_details.get('access_complexity', '') }}</td>
+          <td>{{ cve_details.get('authentication', '') }}</td>
+          <td>{{ cve_details.get('confidentiality_impact', '') }}</td>
+          <td>{{ cve_details.get('integrity_impact', '') }}</td>
+          <td>{{ cve_details.get('availability_impact', '') }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Scores: </h2>
+    <h3>Exploitability Score: <span style="font-weight: normal;">{{ cve_details.get('exploitability_score', '') }}</span></h3>
+    <h3>Impact Score: <span style="font-weight: normal;">{{ cve_details.get('impact_score', '') }}</span></h3>
+
+    <h2>CPE</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Criteria</th>
+      <th>Vulnerable</th>
+      <th>Match Criteria ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if cve_details %}
+    <tr>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+{% else %}
+  <p>No criteria found for this CVE.</p>
+{% endif %}
+
+  </tbody>
+</table>
+
+    {% else %}
+    <p>No details found for this CVE ID.</p>
+  {% endif %}
+</body>
+</html>

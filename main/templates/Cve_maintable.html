@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CVE List</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 4px solid #483889;
+      padding: 8px;
+      text-align: center;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: 20px;
+    }
+    th {
+      background-color: #483889;
+      border-radius: 1px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: 20px;
+      color: #fff;
+    }
+    .pagination {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .pagination button, .pagination a, .apply-btn {
+      padding: 8px 16px;
+      margin: 0 5px;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      text-decoration: none;
+      color: black;
+    }
+    .pagination button.prev, .pagination button.next, .apply-btn {
+      background-color: #ef7b22;
+      color: white;
+    }
+    .pagination button.prev:hover, .pagination button.next:hover, .apply-btn:hover {
+      background-color: #483889;
+    }
+    .pagination a.page {
+      background-color: white;
+      color: white;
+    }
+    .pagination a.page:hover {
+      background-color: #483889;
+    }
+    .clickable {
+      cursor: pointer;
+      text-decoration: underline;
+      color: black;
+    }
+    .clickable:hover {
+      color: #483889;
+    }
+    .date-box {
+      padding: 4px 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+<h2 style="color: #ef7b22; text-align: center;">CVE LIST</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>CVE ID</th>
+      <th>Published Date</th>
+      <th>Last Modified Date</th>
+      <th>Vulnerability Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <h3 style="color: #ef7b22;">Total Records: {{ total_count }}</h3>
+    {% for item in data %}
+    <tr>
+      <td class="clickable" onclick="window.location.href='/details/{{ item.id }}';">{{ item.id }}</td>
+      <td><div class="date-box">{{ item.published.split('T')[0] }}</div></td>
+      <td><div class="date-box">{{ item.last_modified.split('T')[0] }}</div></td>
+      <td>{{ item.vuln_status }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="pagination">
+  <button class="prev" id="prevPageBtn" onclick="prevPage()" {% if page == 1 %}disabled{% endif %}>Previous Page</button>
+  <span>Page <span id="currentPage">{{ page }}</span> of <span id="totalPages">{{ total_pages }}</span></span>
+  <button class="next" id="nextPageBtn" onclick="nextPage()" {% if page == total_pages %}disabled{% endif %}>Next Page</button>
+</div>
+
+<form action="/" method="get" onsubmit="event.preventDefault(); changeResultsPerPage();">
+  <label for="resultsPerPage">Results Per Page:</label>
+  <select name="resultsPerPage" id="resultsPerPage">
+    <option value="10" {% if per_page == 10 %} selected {% endif %}>10</option>
+    <option value="50" {% if per_page == 50 %} selected {% endif %}>50</option>
+    <option value="100" {% if per_page == 100 %} selected {% endif %}>100</option>
+  </select>
+  <button class="apply-btn" type="submit">Apply</button>
+</form>
+</div>
+  <script>
+  // Function to navigate to previous page
+  function prevPage() {
+    var currentPage = parseInt(document.getElementById("currentPage").textContent);
+    window.location.href = '/?page=' + (currentPage - 1) + '&resultsPerPage={{ per_page }}';
+  }
+
+  // Function to navigate to next page
+  function nextPage() {
+    var currentPage = parseInt(document.getElementById("currentPage").textContent);
+    window.location.href = '/?page=' + (currentPage + 1) + '&resultsPerPage={{ per_page }}';
+  }
+
+  // Function to change results per page
+  function changeResultsPerPage() {
+    var perPage = document.getElementById("resultsPerPage").value;
+    window.location.href = '/?page=1&resultsPerPage=' + perPage;
+  }
+  
+</script>
+</body>
+</html>
